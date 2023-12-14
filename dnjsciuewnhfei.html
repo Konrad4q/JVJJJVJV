@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Recognition Demo</title>
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 50px;
+}
+
+button {
+    font-size: 16px;
+    margin: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+    </style>
+</head>
+<body>
+    <button id="startButton">Start Speech Recognition</button>
+    <button id="stopButton">Stop Speech Recognition</button>
+
+    <script>
+if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    
+    // Set language to Polish
+    recognition.lang = 'pl-PL';
+
+    recognition.onstart = () => {
+        console.log('Speech recognition started');
+    };
+
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        console.log('Speech recognition result:', transcript);
+        // You can do something with the transcript here
+    };
+
+    recognition.onend = () => {
+        console.log('Speech recognition ended');
+    };
+
+    recognition.onerror = (event) => {
+        console.error('Speech recognition error:', event.error);
+    };
+
+    document.getElementById('startButton').addEventListener('click', () => {
+        recognition.start();
+    });
+
+    document.getElementById('stopButton').addEventListener('click', () => {
+        recognition.stop();
+    });
+} else {
+    console.error('Speech recognition not supported in this browser');
+}
+
+    </script>
+</body>
+</html>
